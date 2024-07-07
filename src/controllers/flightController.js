@@ -1,0 +1,51 @@
+const { StatusCodes } = require('http-status-codes');
+
+const { FlightService } = require('../services/index');
+const { FlightRepository } = require('../repositories/index');
+
+const airportService = new FlightService(new FlightRepository());
+
+async function createFlight(req, res, next) {
+    try {
+        const flight = await airportService.createFlight({
+            flightNumber: req.body.flightNumber,
+            airplaneId: req.body.airplaneId,
+            departureAirportId: req.body.departureAirportId,
+            arrivalAirportId: req.body.arrivalAirportId,
+            departureTime: req.body.departureTime,
+            arrivalTime: req.body.arrivalTime,
+            price: req.body.price,
+            boardingGate: req.body.boardingGate,
+            totalSeats: req.body.totalSeats 
+        });
+
+        return res.status(StatusCodes.CREATED).json({
+            success: true,
+            message: "Created a new flight entry",
+            error: {},
+            data: flight
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getAllFlights(req, res, next) {
+    try {
+        const flights = await airportService.getAllFlights(req.query);
+
+        return res.status(StatusCodes.ACCEPTED).json({
+            success: true,
+            message: "Fetched flights based on filters",
+            error: {},
+            data: flights
+        });
+    } catch (error) {
+        next(error); 
+    }
+}
+
+module.exports = {
+    createFlight,
+    getAllFlights
+}
