@@ -53,6 +53,16 @@ class CityService {
             throw new InternalServerError('Cannot update the data, something went wrong!');
         }
     }
+
+    async getCities() {
+        try {
+            const cities = await this.cityRepository.getAll();
+            return cities;
+        } catch (error) {
+            Logger.error("Cannot fetch the data of all cities, something went wrong internally");
+            throw new InternalServerError("Something went wrong internally, no data fetched");
+        }
+    }
 } 
 
 module.exports = CityService;

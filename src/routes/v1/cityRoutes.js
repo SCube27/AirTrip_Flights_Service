@@ -11,4 +11,6 @@ cityRouter.delete('/:id', CityController.deleteCity);
 
 cityRouter.patch('/:id', CityController.updateCity);
 
+cityRouter.get('/', CityController.getCities);
+
 module.exports = cityRouter;
