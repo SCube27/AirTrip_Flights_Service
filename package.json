@@ -1,5 +1,5 @@
 {
-  "name": "airlink_flights_service",
+  "name": "airtrip_flights_service",
   "version": "1.0.0",
   "description": "A microservice for getting flights details for the airline project",
   "main": "index.js",
@@ -9,6 +9,7 @@
   "author": "Sahil Shah",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "http-status-codes": "^2.3.0",

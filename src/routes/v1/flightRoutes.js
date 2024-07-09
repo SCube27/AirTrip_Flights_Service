@@ -9,4 +9,6 @@ flightRouter.post('/', FlightMiddlewares.validateCreateRequest, FlightController
 
 flightRouter.get('/', FlightController.getAllFlights);
 
+flightRouter.get('/:id', FlightController.getFlightDetails);
+
 module.exports = flightRouter;

@@ -37,11 +37,6 @@ class AirportService {
 
     async getAirport(airportID) {
         try {
-            // if(!Number.isInteger(airplaneID)) {
-            //     Logger.error(`Invalid airplaneID: ${airplaneID}`);
-            //     throw new BadRequestError("airplaneID", "Airplane ID must be an integer");
-            // }
-
             const airport = await this.airportRepository.get(airportID);
             return airport;
         } catch (error) {

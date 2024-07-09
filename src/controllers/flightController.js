@@ -3,11 +3,11 @@ const { StatusCodes } = require('http-status-codes');
 const { FlightService } = require('../services/index');
 const { FlightRepository } = require('../repositories/index');
 
-const airportService = new FlightService(new FlightRepository());
+const flightService = new FlightService(new FlightRepository());
 
 async function createFlight(req, res, next) {
     try {
-        const flight = await airportService.createFlight({
+        const flight = await flightService.createFlight({
             flightNumber: req.body.flightNumber,
             airplaneId: req.body.airplaneId,
             departureAirportId: req.body.departureAirportId,
@@ -32,7 +32,7 @@ async function createFlight(req, res, next) {
 
 async function getAllFlights(req, res, next) {
     try {
-        const flights = await airportService.getAllFlights(req.query);
+        const flights = await flightService.getAllFlights(req.query);
 
         return res.status(StatusCodes.ACCEPTED).json({
             success: true,
@@ -45,7 +45,23 @@ async function getAllFlights(req, res, next) {
     }
 }
 
+async function getFlightDetails(req, res, next) {
+    try {
+        const flight = await flightService.getFlightDetails(req.params.id);
+
+        return res.status(StatusCodes.ACCEPTED).json({
+            success: true,
+            mesasge: "Fetched the flight details",
+            error: {},
+            data: flight
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     createFlight,
-    getAllFlights
+    getAllFlights,
+    getFlightDetails,
 }

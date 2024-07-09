@@ -91,6 +91,19 @@ class FlightService {
             throw new InternalServerError("Something went wrong, cannot create new flight entry");
         }
     }
+
+    async getFlightDetails(id) {
+        try {
+            const flight = await this.flightRepository.get(id);
+            return flight;
+        } catch (error) {
+            Logger.error(`Cannot fetch the data of flight for ID ${id}`);
+            if(error.statusCode === StatusCodes.NOT_FOUND) {
+                throw new NotFoundError(id, `Flight for ID ${id} not found!`)
+            }
+            throw new InternalServerError("Something went wrong internally, no data fetched");
+        }
+    }
 }
 
 module.exports = FlightService;
