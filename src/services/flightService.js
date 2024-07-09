@@ -104,6 +104,16 @@ class FlightService {
             throw new InternalServerError("Something went wrong internally, no data fetched");
         }
     }
+
+    async updateSeats(data) {
+        try {
+            const updatedSeats = await this.flightRepository.updateRemainingSeats(data.flightId, data.seats, data.dec);
+            return updatedSeats;
+        } catch (error) {
+            Logger.error('Some internal server error occured at the service layer!');
+            throw new InternalServerError('Some internal server error occured!');
+        }
+    }
 }
 
 module.exports = FlightService;

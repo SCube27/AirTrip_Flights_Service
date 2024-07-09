@@ -3,6 +3,9 @@ const { Sequelize } = require('sequelize');
 const CrudRepository = require('./crudRepository');
 const { Flight, Airplane, Airport, City } = require('../models/index');
 const { Logger } = require('../config');
+const { InternalServerError } = require('../errors');
+const db = require('../models/index');
+const { addRowLockOnFlights } = require('./queries');
 
 class FlightRepository extends CrudRepository {
     constructor() {
@@ -50,7 +53,25 @@ class FlightRepository extends CrudRepository {
             return flights;
         } catch (error) {
             Logger.error('Error occured inside repository while fetching the flights!')
-            throw error;
+            throw new InternalServerError('Some internal error occured while fetching the data');
+        }
+    }
+
+    async updateRemainingSeats(flightId, seats, dec = true) {
+        try {
+            await db.sequelize.query(addRowLockOnFlights(flightId));
+            const flight = await Flight.findByPk(flightId);
+
+            if(parseInt(dec)) {
+                await flight.decrement('totalSeats', {by: seats});
+            } else {
+                await flight.increment('totalSeats', {by: seats});
+            }
+            await flight.save();
+            return flight;
+        } catch (error) {
+            Logger.error('Error occured inside repository while fetching the flights!')
+            throw new InternalServerError('Some error occured while updating the data, Please try again');
         }
     }
 }

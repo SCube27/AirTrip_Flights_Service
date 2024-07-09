@@ -87,6 +87,21 @@ function validateCreateRequest(req, res, next) {
     next();
 } 
 
+function updateSeatsRequest(req, res, next) {
+    if(!req.body.seats) {
+        Logger.error("Bad request for creating flight recieved.(Seats number to be updated not provided)");
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            success: false,
+            message: "Seats not updated",
+            error: new BadRequestError("seats", "Seats to be updated for the flight not provided"),
+            data: {}
+        });
+    }
+
+    next();
+}
+
 module.exports = {
     validateCreateRequest,
+    updateSeatsRequest
 }
