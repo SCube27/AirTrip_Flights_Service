@@ -3,7 +3,7 @@ const { Logger } = require('../config');
 const { BadRequestError } = require('../errors/index');
 
 function validateCreateRequest(req, res, next) {
-    if(!req.body.citName) {
+    if(!req.body.cityName) {
         Logger.error("Bad request for creating a new city entry recieved.");
         return res.status(StatusCodes.BAD_REQUEST).json({
             success: false,
